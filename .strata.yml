@@ -1,0 +1,30 @@
+global:
+  email-reply-to: nobody@salesforce.com
+  log-level: debug
+  enable-safe-repo-pilot: true
+  production-branches:
+    - main
+stages:
+  build:
+    - step:
+        name: validate-env-vars
+        image: dva-registry.internal.salesforce.com/sfci/docker-images/sfdc_centos7_python3.9
+        commands:
+          - echo "NEXUS_BASE_URL $NEXUS_BASE_URL"
+          - echo "PIP_INDEX_URL $PIP_INDEX_URL"
+          - echo "PIP_TRUSTED_HOST $PIP_TRUSTED_HOST"
+          - |
+            if [ "$NEXUS_BASE_URL" != "https://nexus-proxy.repo.local.sfdc.net/saferepo" ]; then
+              echo "Expected 'https://nexus-proxy.repo.local.sfdc.net/saferepo' but received $NEXUS_BASE_URL"
+              exit 1
+            fi
+            if [ "$PIP_INDEX_URL" != "https://nexus-proxy.repo.local.sfdc.net/saferepo/repository/pypi-hosted-intake/simple" ]; then
+              echo "Expected 'https://nexus-proxy.repo.local.sfdc.net/saferepo/repository/pypi-hosted-intake/simple' but received $PIP_INDEX_URL"
+              exit 1
+            fi
+            if [ "$PIP_TRUSTED_HOST" != "nexus-proxy.repo.local.sfdc.net" ]; then
+              echo "Expected 'nexus-proxy.repo.local.sfdc.net' but received $PIP_TRUSTED_HOST"
+              exit 1
+            fi
+          - echo "PASSED"
+
