@@ -18,7 +18,7 @@ stages:
               echo "Expected 'https://nexus-proxy.repo.local.sfdc.net/saferepo' but received $NEXUS_BASE_URL"
               exit 1
             fi
-            if [ "$PIP_INDEX_URL" != "https://nexus-proxy.repo.local.sfdc.net/saferepo/repository/pypi-hosted-intake/simple" ]; then
+            if [ "$PIP_INDEX_URL" != "https://nexus-proxy.repo.local.sfdc.net/saferepo/repository/pypi-hosted-intake/simple/" ]; then
               echo "Expected 'https://nexus-proxy.repo.local.sfdc.net/saferepo/repository/pypi-hosted-intake/simple' but received $PIP_INDEX_URL"
               exit 1
             fi
